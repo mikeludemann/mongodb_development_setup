@@ -1,0 +1,17 @@
+{
+	"data": {
+		"hosting": {
+			"host": "localhost",
+			"port": 3333
+		},
+		"database": {
+			"dbname": "test",
+			"username": "root",
+			"password": "admin"
+		},
+		"credit": {
+			"initialLimit": 100,
+			"initialDays": 1
+		}
+	}
+}

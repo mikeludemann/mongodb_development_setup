@@ -1,0 +1,19 @@
+{
+	"restartable": "rs",
+	"colours": true,
+	"verbose": true,
+	"ignore": [
+		".git",
+		"./node_modules/*"
+	],
+	"delay": "2000",
+	"watch": [
+		"./*"
+	],
+	"env": {
+		"NODE_ENV": "development"
+	},
+	"ext": "js,json",
+	"stdin": true,
+	"stdout": true
+}
