@@ -8,7 +8,8 @@
 	],
 	"delay": "2000",
 	"watch": [
-		"./*"
+		"./*",
+		"./index.js"
 	],
 	"env": {
 		"NODE_ENV": "development"

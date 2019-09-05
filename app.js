@@ -8,10 +8,37 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import dotenv from 'dotenv';
 import config from 'config';
+import mongo from 'mongodb';
 
 // Config file
 
 var environmentFile = dotenv.config();
+
+// Connection to database
+
+import { MongoClient } from 'mongodb';
+var url = "mongodb://localhost:27017/testing";
+
+MongoClient.connect(url, function(err, db) {
+
+	if (err) throw err;
+	
+	console.log("Connect to the server!");
+	console.log("Connect to the database!");
+
+	var contactPerson = { firstname: "John", lastname: "Doe", street: "Test Street", streetnumber: "0", postalcode: "00000", city: "Test Town" };
+
+	db.collection("persons").insertOne(contactPerson, function(err, res) {
+
+		if (err) throw err;
+		
+		console.log("Inserted a new contact person");
+
+		db.close();
+		
+  });
+	
+});
 
 /**
 	* Routing with Express
@@ -37,9 +64,14 @@ app.use(session({
 	}
 }));
 
+app.use(function(req,res,next){
+	req.db = db;
+	next();
+})
+
 app.get("/", function(req, res){
 	res.render("index",{
-		title: "Home"
+		title: "Home",
 	});
 });
 
@@ -47,6 +79,25 @@ app.get("/", function(req, res){
 	* Error handler
 	*/
 
+// 404 and forward to error handler
+app.use(function(req, res, next) {
+
+	next(createError(404));
+	
+});
+
+// error handler
+app.use(function(err, req, res, next) {
+
+	// set locals, only providing error in development
+	res.locals.message = err.message;
+	res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+	// render the error page
+	res.status(err.status || 500);
+	res.render('error');
+
+});
 
 /**
 	* Setup for http(s) Server
